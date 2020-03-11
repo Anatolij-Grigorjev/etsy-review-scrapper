@@ -1,36 +1,10 @@
 # etsy-scrubber
 
-FIXME: description
-
-## Installation
-
-Download from http://example.com/FIXME.
-
-## Usage
-
-FIXME: explanation
-
-    $ java -jar etsy-scrubber-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+This is a small CLojure-based POC to try fetch firs page of Etsy reviews on a specific product and scrub the reviewer profile links
 
 ## License
 
-Copyright © 2020 FIXME
+Copyright © 2020 Tiem625
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
