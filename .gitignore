@@ -1,12 +1,26 @@
+#target dirs
 /target
 /classes
 /checkouts
+
+#personal configuration
 profiles.clj
+
+#maven-style dependency files
 pom.xml
 pom.xml.asc
+
+#generated artifacts
 *.jar
 *.class
+
+#leiningen stuff
 /.lein-*
 /.nrepl-port
+
+#mercurial stuff
 .hgignore
 .hg/
+
+#created test files
+*.iism
