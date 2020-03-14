@@ -6,10 +6,14 @@
   "Surround link with required clicked bot formatting for script"
   [link]
   (str "URL GOTO=" link (System/lineSeparator)
-       "TAG POS=2 TYPE=A ATTR=TXT:Follow<SP>Loading" (System/lineSeparator)
-       "WAIT SECONDS=2" (System/lineSeparator)))
+       "TAG POS=2 TYPE=A ATTR=TXT:Follow<SP>Loading" (System/lineSeparator)))
 
 (def macro-header (str "VERSION BUILD=1005 RECORDER=CR" (System/lineSeparator)))
+(def num-per-script 24)
+
+(defn parse-int [number-string]
+  (try (Integer/parseInt number-string)
+       (catch Exception e nil)))
 
 (defn fetch-links-page
   [base-url page-idx]
@@ -29,12 +33,23 @@
      (System/exit 1)))
 
   (def shop-url-base (first args))
-  (def num-pages (or (Integer/parseInt (second args)) 25))
+  (def num-pages (or (parse-int (second args)) 25))
   (def shop-name (let [shop-name-bit (re-find #"/shop/.+/" shop-url-base)]
                    (subs shop-name-bit (count "/shop/") (dec (count shop-name-bit)))))
 
   (let [fetched-links-lists (map #(fetch-links-page shop-url-base %) (range 1 (inc num-pages)))
         all-links (set (flatten fetched-links-lists))
-        formatted-links (map format-link all-links)]
+        formatted-links (map format-link all-links)
+        links-chunks (partition num-per-script num-per-script [] formatted-links)]
     (println "Done fetching total of " (count all-links) " links!")
-    (spit (str shop-name "_" num-pages "_pages.iism") (str macro-header (apply str formatted-links)))))
+    (doall 
+     (map-indexed
+      
+      (fn [idx chunk-links] 
+        (spit 
+         (str shop-name "_" num-pages "_pages_part_" idx ".iism") 
+         (str macro-header (apply str chunk-links))))
+      
+      links-chunks))
+    )
+  )
